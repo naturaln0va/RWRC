@@ -28,6 +28,7 @@
 
 import UIKit
 import Firebase
+import FirebaseFirestore
 
 class ChannelsViewController: UITableViewController {
   
@@ -42,8 +43,13 @@ class ChannelsViewController: UITableViewController {
   private var currentChannelAlertController: UIAlertController?
   
   private var channels = [Channel]()
+  private var channelListener: ListenerRegistration?
 
   private let currentUser: User
+  
+  deinit {
+    channelListener?.remove()
+  }
   
   init(currentUser: User) {
     self.currentUser = currentUser
@@ -72,6 +78,17 @@ class ChannelsViewController: UITableViewController {
     
     if let name = AppSettings.displayName {
       toolbarLabel.text = name
+    }
+    
+    channelListener = DatabaseHelper.channelReference.addSnapshotListener { querySnapshot, error in
+      guard let snapshot = querySnapshot else {
+        print("Error listening for channel updates: \(error?.localizedDescription ?? "No error")")
+        return
+      }
+      
+      snapshot.documentChanges.forEach { change in
+        self.handleDocumentChange(change)
+      }
     }
   }
   
@@ -106,7 +123,6 @@ class ChannelsViewController: UITableViewController {
     let ac = UIAlertController(title: "Create a new Channel", message: nil, preferredStyle: .alert)
     ac.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
     ac.addTextField { field in
-      field.addTarget(self, action: #selector(self.textFieldDidReturn), for: .primaryActionTriggered)
       field.addTarget(self, action: #selector(self.textFieldDidChange(_:)), for: .editingChanged)
       field.enablesReturnKeyAutomatically = true
       field.autocapitalizationType = .words
@@ -115,6 +131,7 @@ class ChannelsViewController: UITableViewController {
       field.returnKeyType = .done
       field.tintColor = .primary
     }
+    
     let createAction = UIAlertAction(title: "Create", style: .default, handler: { _ in
       self.createChannel()
     })
@@ -136,10 +153,6 @@ class ChannelsViewController: UITableViewController {
     ac.preferredAction?.isEnabled = field.hasText
   }
   
-  @objc private func textFieldDidReturn() {
-    createChannel()
-  }
-  
   // MARK: - Helpers
   
   private func createChannel() {
@@ -152,6 +165,18 @@ class ChannelsViewController: UITableViewController {
     }
     
     let channel = Channel(name: channelName)
+    DatabaseHelper.saveChannel(channel) { error in
+      if let e = error {
+        print("Error saving channel: \(e.localizedDescription)")
+      }
+    }
+  }
+  
+  private func addChannelToTable(_ channel: Channel) {
+    guard !channels.contains(channel) else {
+      return
+    }
+    
     channels.append(channel)
     channels.sort()
     
@@ -159,6 +184,41 @@ class ChannelsViewController: UITableViewController {
       tableView.insertRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
     } else {
       tableView.reloadData()
+    }
+  }
+  
+  private func updateChannelInTable(_ channel: Channel) {
+    guard let index = channels.index(of: channel) else {
+      return
+    }
+    
+    channels[index] = channel
+    tableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
+  }
+  
+  private func removeChannelFromTable(_ channel: Channel) {
+    guard let index = channels.index(of: channel) else {
+      return
+    }
+    
+    channels.remove(at: index)
+    tableView.deleteRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
+  }
+  
+  private func handleDocumentChange(_ change: DocumentChange) {
+    guard let channel = Channel(document: change.document) else {
+      return
+    }
+    
+    switch change.type {
+    case .added:
+      addChannelToTable(channel)
+      
+    case .modified:
+      updateChannelInTable(channel)
+      
+    case .removed:
+      removeChannelFromTable(channel)
     }
   }
   
