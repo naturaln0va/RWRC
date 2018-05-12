@@ -28,14 +28,10 @@
 
 import UIKit
 
-@UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+extension UIColor {
   
-  func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-    AppController.shared.show(in: UIWindow(frame: UIScreen.main.bounds))
-    
-    return true
+  static var primary: UIColor {
+    return UIColor(red: 1.0/255.0, green: 93.0/255.0, blue: 48.0/255.0, alpha: 1.0)
   }
   
 }
-

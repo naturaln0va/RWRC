@@ -28,14 +28,15 @@
 
 import UIKit
 
-@UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class LoginViewController: UIViewController {
   
-  func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-    AppController.shared.show(in: UIWindow(frame: UIScreen.main.bounds))
+  override var preferredStatusBarStyle: UIStatusBarStyle {
+    return .lightContent
+  }
+  
+  override func viewDidLoad() {
+    super.viewDidLoad()
     
-    return true
   }
   
 }
-

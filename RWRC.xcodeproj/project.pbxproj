@@ -7,8 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4859774D20A689C700429CB3 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4859774C20A689C700429CB3 /* AppSettings.swift */; };
+		4859775020A68AF800429CB3 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4859774E20A68AF800429CB3 /* LoginViewController.swift */; };
+		4859775120A68AF800429CB3 /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4859774F20A68AF800429CB3 /* LoginViewController.xib */; };
+		4859775320A68B1C00429CB3 /* ChannelsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4859775220A68B1C00429CB3 /* ChannelsViewController.swift */; };
+		4859775520A68BF500429CB3 /* AppController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4859775420A68BF500429CB3 /* AppController.swift */; };
+		4859775720A68C6F00429CB3 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4859775620A68C6F00429CB3 /* NavigationController.swift */; };
+		4859775A20A68CAC00429CB3 /* UIColor+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4859775920A68CAC00429CB3 /* UIColor+Additions.swift */; };
 		48AC74C720A66C2A00AA1788 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48AC74C620A66C2A00AA1788 /* AppDelegate.swift */; };
-		48AC74C920A66C2A00AA1788 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48AC74C820A66C2A00AA1788 /* ViewController.swift */; };
 		48AC74CE20A66C2C00AA1788 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 48AC74CD20A66C2C00AA1788 /* Assets.xcassets */; };
 		48AC74D120A66C2C00AA1788 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 48AC74CF20A66C2C00AA1788 /* LaunchScreen.storyboard */; };
 		48AC74DE20A66F2900AA1788 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 48AC74DD20A66F2900AA1788 /* GoogleService-Info.plist */; };
@@ -17,9 +23,15 @@
 
 /* Begin PBXFileReference section */
 		138B8A2C43BFE3C4675D8981 /* Pods-RWRC.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RWRC.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RWRC/Pods-RWRC.debug.xcconfig"; sourceTree = "<group>"; };
+		4859774C20A689C700429CB3 /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
+		4859774E20A68AF800429CB3 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		4859774F20A68AF800429CB3 /* LoginViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LoginViewController.xib; sourceTree = "<group>"; };
+		4859775220A68B1C00429CB3 /* ChannelsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelsViewController.swift; sourceTree = "<group>"; };
+		4859775420A68BF500429CB3 /* AppController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppController.swift; sourceTree = "<group>"; };
+		4859775620A68C6F00429CB3 /* NavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
+		4859775920A68CAC00429CB3 /* UIColor+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Additions.swift"; sourceTree = "<group>"; };
 		48AC74C320A66C2A00AA1788 /* RWRC.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RWRC.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		48AC74C620A66C2A00AA1788 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		48AC74C820A66C2A00AA1788 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		48AC74CD20A66C2C00AA1788 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		48AC74D020A66C2C00AA1788 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		48AC74D220A66C2C00AA1788 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -48,6 +60,14 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		4859775820A68C9B00429CB3 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				4859775920A68CAC00429CB3 /* UIColor+Additions.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		48AC74BA20A66C2A00AA1788 = {
 			isa = PBXGroup;
 			children = (
@@ -72,6 +92,7 @@
 			isa = PBXGroup;
 			children = (
 				48AC74DA20A66C9700AA1788 /* Controllers */,
+				4859775820A68C9B00429CB3 /* Extensions */,
 				48AC74D920A66C8600AA1788 /* Models */,
 				48AC74DC20A66CB800AA1788 /* Supporting Files */,
 				48AC74D820A66C7A00AA1788 /* View Controllers */,
@@ -83,7 +104,10 @@
 		48AC74D820A66C7A00AA1788 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				48AC74C820A66C2A00AA1788 /* ViewController.swift */,
+				4859775220A68B1C00429CB3 /* ChannelsViewController.swift */,
+				4859774E20A68AF800429CB3 /* LoginViewController.swift */,
+				4859774F20A68AF800429CB3 /* LoginViewController.xib */,
+				4859775620A68C6F00429CB3 /* NavigationController.swift */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -98,7 +122,9 @@
 		48AC74DA20A66C9700AA1788 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				4859775420A68BF500429CB3 /* AppController.swift */,
 				48AC74C620A66C2A00AA1788 /* AppDelegate.swift */,
+				4859774C20A689C700429CB3 /* AppSettings.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -191,6 +217,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4859775120A68AF800429CB3 /* LoginViewController.xib in Resources */,
 				48AC74D120A66C2C00AA1788 /* LaunchScreen.storyboard in Resources */,
 				48AC74CE20A66C2C00AA1788 /* Assets.xcassets in Resources */,
 				48AC74DE20A66F2900AA1788 /* GoogleService-Info.plist in Resources */,
@@ -278,8 +305,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				48AC74C920A66C2A00AA1788 /* ViewController.swift in Sources */,
+				4859775320A68B1C00429CB3 /* ChannelsViewController.swift in Sources */,
+				4859775720A68C6F00429CB3 /* NavigationController.swift in Sources */,
+				4859775520A68BF500429CB3 /* AppController.swift in Sources */,
+				4859775020A68AF800429CB3 /* LoginViewController.swift in Sources */,
 				48AC74C720A66C2A00AA1788 /* AppDelegate.swift in Sources */,
+				4859774D20A689C700429CB3 /* AppSettings.swift in Sources */,
+				4859775A20A68CAC00429CB3 /* UIColor+Additions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

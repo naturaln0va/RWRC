@@ -26,15 +26,30 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 /// THE SOFTWARE.
 
-import UIKit
+import Foundation
 
-class ViewController: UIViewController {
+final class AppSettings {
   
-  override func viewDidLoad() {
-    super.viewDidLoad()
-    
-    view.backgroundColor = .white
+  private enum SettingKey: String {
+    case displayName
+  }
+  
+  static var displayName: String? {
+    get {
+      return UserDefaults.standard.string(forKey: SettingKey.displayName.rawValue)
+    }
+    set {
+      let defaults = UserDefaults.standard
+      let key = SettingKey.displayName.rawValue
+      
+      if let name = newValue {
+        defaults.set(name, forKey: key)
+      } else {
+        defaults.removeObject(forKey: key)
+      }
+      
+      defaults.synchronize()
+    }
   }
   
 }
-
