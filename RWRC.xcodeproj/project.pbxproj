@@ -11,6 +11,7 @@
 		48AC74C920A66C2A00AA1788 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48AC74C820A66C2A00AA1788 /* ViewController.swift */; };
 		48AC74CE20A66C2C00AA1788 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 48AC74CD20A66C2C00AA1788 /* Assets.xcassets */; };
 		48AC74D120A66C2C00AA1788 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 48AC74CF20A66C2C00AA1788 /* LaunchScreen.storyboard */; };
+		48AC74DE20A66F2900AA1788 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 48AC74DD20A66F2900AA1788 /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -20,6 +21,7 @@
 		48AC74CD20A66C2C00AA1788 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		48AC74D020A66C2C00AA1788 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		48AC74D220A66C2C00AA1788 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		48AC74DD20A66F2900AA1788 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,8 +99,9 @@
 			isa = PBXGroup;
 			children = (
 				48AC74CD20A66C2C00AA1788 /* Assets.xcassets */,
-				48AC74CF20A66C2C00AA1788 /* LaunchScreen.storyboard */,
+				48AC74DD20A66F2900AA1788 /* GoogleService-Info.plist */,
 				48AC74D220A66C2C00AA1788 /* Info.plist */,
+				48AC74CF20A66C2C00AA1788 /* LaunchScreen.storyboard */,
 			);
 			path = "Supporting Files";
 			sourceTree = "<group>";
@@ -163,6 +166,7 @@
 			files = (
 				48AC74D120A66C2C00AA1788 /* LaunchScreen.storyboard in Resources */,
 				48AC74CE20A66C2C00AA1788 /* Assets.xcassets in Resources */,
+				48AC74DE20A66F2900AA1788 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
