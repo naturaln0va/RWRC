@@ -26,64 +26,28 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 /// THE SOFTWARE.
 
-import UIKit
-import Firebase
+import Foundation
 
-final class AppController {
+struct Channel {
   
-  static let shared = AppController()
+  let id: String
+  let name: String
   
-  init() {  
-    NotificationCenter.default.addObserver(
-      self,
-      selector: #selector(userStateDidChange),
-      name: Notification.Name.AuthStateDidChange,
-      object: nil
-    )
+  init(name: String) {
+    id = UUID().uuidString
+    self.name = name
   }
   
-  private var window: UIWindow!
-  private var rootViewController: UIViewController? {
-    didSet {
-      if let vc = rootViewController {
-        window.rootViewController = vc
-      }
-    }
+}
+
+extension Channel: Comparable {
+  
+  static func == (lhs: Channel, rhs: Channel) -> Bool {
+    return lhs.id == rhs.id
   }
   
-  // MARK: - Helpers
-  
-  func show(in window: UIWindow?) {
-    guard let window = window else {
-      fatalError("Cannot layout app with a nil window.")
-    }
-    
-    FirebaseApp.configure()
-    
-    self.window = window
-    window.tintColor = .primary
-    window.backgroundColor = .white
-    
-    handleAppState()
-    
-    window.makeKeyAndVisible()
+  static func < (lhs: Channel, rhs: Channel) -> Bool {
+    return lhs.name < rhs.name
   }
-  
-  private func handleAppState() {
-    if let user = Auth.auth().currentUser {
-      let vc = ChannelsViewController(currentUser: user)
-      rootViewController = NavigationController(vc)
-    } else {
-      rootViewController = LoginViewController()
-    }
-  }
-  
-  // MARK: - Notifications
-  
-  @objc internal func userStateDidChange() {
-    DispatchQueue.main.async {
-      self.handleAppState()
-    }
-  }
-  
+
 }

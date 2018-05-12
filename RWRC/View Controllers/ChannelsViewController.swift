@@ -37,6 +37,11 @@ class ChannelsViewController: UITableViewController {
     label.font = UIFont.systemFont(ofSize: 12)
     return label
   }()
+  
+  private let channelCellIdentifier = "channelCell"
+  private var currentChannelAlertController: UIAlertController?
+  
+  private var channels = [Channel]()
 
   private let currentUser: User
   
@@ -53,6 +58,9 @@ class ChannelsViewController: UITableViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
+    
+    clearsSelectionOnViewWillAppear = true
+    tableView.register(UITableViewCell.self, forCellReuseIdentifier: channelCellIdentifier)
     
     toolbarItems = [
       UIBarButtonItem(title: "Sign Out", style: .plain, target: self, action: #selector(signOut)),
@@ -95,7 +103,63 @@ class ChannelsViewController: UITableViewController {
   }
   
   @objc private func addButtonPressed() {
+    let ac = UIAlertController(title: "Create a new Channel", message: nil, preferredStyle: .alert)
+    ac.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+    ac.addTextField { field in
+      field.addTarget(self, action: #selector(self.textFieldDidReturn), for: .primaryActionTriggered)
+      field.addTarget(self, action: #selector(self.textFieldDidChange(_:)), for: .editingChanged)
+      field.enablesReturnKeyAutomatically = true
+      field.autocapitalizationType = .words
+      field.clearButtonMode = .whileEditing
+      field.placeholder = "Channel name"
+      field.returnKeyType = .done
+      field.tintColor = .primary
+    }
+    let createAction = UIAlertAction(title: "Create", style: .default, handler: { _ in
+      self.createChannel()
+    })
+    createAction.isEnabled = false
+    ac.addAction(createAction)
+    ac.preferredAction = createAction
     
+    present(ac, animated: true) {
+      ac.textFields?.first?.becomeFirstResponder()
+    }
+    currentChannelAlertController = ac
+  }
+  
+  @objc private func textFieldDidChange(_ field: UITextField) {
+    guard let ac = currentChannelAlertController else {
+      return
+    }
+    
+    ac.preferredAction?.isEnabled = field.hasText
+  }
+  
+  @objc private func textFieldDidReturn() {
+    createChannel()
+  }
+  
+  // MARK: - Helpers
+  
+  private func createChannel() {
+    guard let ac = currentChannelAlertController else {
+      return
+    }
+    
+    guard let channelName = ac.textFields?.first?.text else {
+      return
+    }
+    
+    let channel = Channel(name: channelName)
+    channels.append(channel)
+    channels.sort()
+    
+    if let index = channels.index(of: channel) {
+      tableView.insertRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
+    } else {
+      tableView.reloadData()
+    }
   }
   
 }
@@ -103,11 +167,11 @@ class ChannelsViewController: UITableViewController {
 extension ChannelsViewController {
   
   override func numberOfSections(in tableView: UITableView) -> Int {
-    return 0
+    return 1
   }
   
   override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return 0
+    return channels.count
   }
   
   override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -115,7 +179,16 @@ extension ChannelsViewController {
   }
   
   override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    return UITableViewCell()
+    let cell = tableView.dequeueReusableCell(withIdentifier: channelCellIdentifier, for: indexPath)
+    
+    cell.accessoryType = .disclosureIndicator
+    cell.textLabel?.text = channels[indexPath.row].name
+    
+    return cell
+  }
+  
+  override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    
   }
   
 }

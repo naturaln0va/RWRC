@@ -50,7 +50,7 @@ class LoginViewController: UIViewController {
     displayNameField.tintColor = .primary
     displayNameField.addTarget(
       self,
-      action: #selector(textfieldDidReturn),
+      action: #selector(textFieldDidReturn),
       for: .primaryActionTriggered
     )
     
@@ -69,7 +69,7 @@ class LoginViewController: UIViewController {
     signIn()
   }
   
-  @objc private func textfieldDidReturn() {
+  @objc private func textFieldDidReturn() {
     signIn()
   }
   
