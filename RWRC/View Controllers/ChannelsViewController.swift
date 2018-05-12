@@ -248,7 +248,9 @@ extension ChannelsViewController {
   }
   
   override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    
+    let channel = channels[indexPath.row]
+    let vc = ChatViewController(user: currentUser, channel: channel)
+    navigationController?.pushViewController(vc, animated: true)
   }
   
 }
