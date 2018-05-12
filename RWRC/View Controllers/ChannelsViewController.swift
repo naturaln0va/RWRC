@@ -31,6 +31,13 @@ import Firebase
 
 class ChannelsViewController: UITableViewController {
   
+  private let toolbarLabel: UILabel = {
+    let label = UILabel()
+    label.textAlignment = .center
+    label.font = UIFont.systemFont(ofSize: 12)
+    return label
+  }()
+
   private let currentUser: User
   
   init(currentUser: User) {
@@ -46,6 +53,48 @@ class ChannelsViewController: UITableViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
+    
+    toolbarItems = [
+      UIBarButtonItem(title: "Sign Out", style: .plain, target: self, action: #selector(signOut)),
+      UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
+      UIBarButtonItem(customView: toolbarLabel),
+      UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
+      UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addButtonPressed)),
+    ]
+    
+    if let name = AppSettings.displayName {
+      toolbarLabel.text = name
+    }
+  }
+  
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    
+    navigationController?.isToolbarHidden = false
+  }
+  
+  override func viewWillDisappear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
+    
+    navigationController?.isToolbarHidden = true
+  }
+  
+  // MARK: - Actions
+  
+  @objc private func signOut() {
+    let ac = UIAlertController(title: nil, message: "Are you sure you want to sign out?", preferredStyle: .alert)
+    ac.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+    ac.addAction(UIAlertAction(title: "Sign Out", style: .destructive, handler: { _ in
+      do {
+        try Auth.auth().signOut()
+      } catch {
+        print("Error signing out: \(error.localizedDescription)")
+      }
+    }))
+    present(ac, animated: true, completion: nil)
+  }
+  
+  @objc private func addButtonPressed() {
     
   }
   
