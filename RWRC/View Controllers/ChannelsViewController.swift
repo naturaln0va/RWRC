@@ -75,10 +75,7 @@ class ChannelsViewController: UITableViewController {
       UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
       UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addButtonPressed)),
     ]
-    
-    if let name = AppSettings.displayName {
-      toolbarLabel.text = name
-    }
+    toolbarLabel.text = AppSettings.displayName
     
     channelListener = DatabaseHelper.channelReference.addSnapshotListener { querySnapshot, error in
       guard let snapshot = querySnapshot else {
@@ -223,6 +220,8 @@ class ChannelsViewController: UITableViewController {
   }
   
 }
+
+// MARK: - TableViewDelegate
 
 extension ChannelsViewController {
   

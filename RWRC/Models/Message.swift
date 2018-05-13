@@ -26,53 +26,78 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 /// THE SOFTWARE.
 
+import Firebase
+import MessageKit
 import FirebaseFirestore
 
-struct Channel {
+struct Message: MessageType {
   
   let id: String?
-  let name: String
+  let content: String
+  let sentDate: Date
+  let sender: Sender
   
-  init(name: String) {
+  var data: MessageData {
+    return .text(content)
+  }
+  
+  var messageId: String {
+    return id ?? UUID().uuidString
+  }
+  
+  init(user: User, content: String) {
+    sender = Sender(id: user.uid, displayName: AppSettings.displayName)
+    self.content = content
+    sentDate = Date()
     id = nil
-    self.name = name
   }
   
   init?(document: QueryDocumentSnapshot) {
     let data = document.data()
     
-    guard let name = data["name"] as? String else {
+    guard let content = data["content"] as? String else {
+      return nil
+    }
+    guard let sentDate = data["created"] as? Date else {
+      return nil
+    }
+    guard let senderID = data["senderID"] as? String else {
+      return nil
+    }
+    guard let senderName = data["senderName"] as? String else {
       return nil
     }
     
     id = document.documentID
-    self.name = name
+    
+    self.content = content
+    self.sentDate = sentDate
+    sender = Sender(id: senderID, displayName: senderName)
   }
   
 }
 
-extension Channel: DatabaseRepresentation {
+extension Message: DatabaseRepresentation {
   
   var representation: [String : Any] {
-    var rep = ["name": name]
-    
-    if let id = id {
-      rep["id"] = id
-    }
-    
-    return rep
+    return [
+      "content": content,
+      "created": sentDate,
+      "senderID": sender.id,
+      "senderName": sender.displayName
+    ]
   }
   
 }
 
-extension Channel: Comparable {
+extension Message: Comparable {
   
-  static func == (lhs: Channel, rhs: Channel) -> Bool {
+  static func == (lhs: Message, rhs: Message) -> Bool {
     return lhs.id == rhs.id
   }
   
-  static func < (lhs: Channel, rhs: Channel) -> Bool {
-    return lhs.name < rhs.name
+  static func < (lhs: Message, rhs: Message) -> Bool {
+    return lhs.sentDate < rhs.sentDate
   }
-
+  
 }

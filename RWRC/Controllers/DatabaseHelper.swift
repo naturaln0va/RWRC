@@ -36,6 +36,10 @@ final class DatabaseHelper {
     case channels
   }
   
+  private enum DatabaseError: Error {
+    case channelNotSynced
+  }
+  
   private static let db = Firestore.firestore()
   
   static var channelReference: CollectionReference {
@@ -45,6 +49,24 @@ final class DatabaseHelper {
   static func saveChannel(_ channel: Channel, completionBlock: CompletionBlock? = nil) {
     let data = channel.representation
     channelReference.addDocument(data: data, completion: completionBlock)
+  }
+  
+  static func chatReference(for channel: Channel) -> CollectionReference? {
+    guard let id = channel.id else {
+      return nil
+    }
+    
+    let path = [String(), TopLevelCollection.channels.rawValue, id, "thread"].joined(separator: "/")
+    return db.collection(path)
+  }
+  
+  static func saveMessage(to channel: Channel, message: Message, completionBlock: CompletionBlock? = nil) {
+    guard let ref = chatReference(for: channel) else {
+      completionBlock?(DatabaseError.channelNotSynced)
+      return
+    }
+    
+    ref.addDocument(data: message.representation, completion: completionBlock)
   }
   
 }

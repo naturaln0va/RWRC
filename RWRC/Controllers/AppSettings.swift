@@ -34,7 +34,7 @@ final class AppSettings {
     case displayName
   }
   
-  static var displayName: String? {
+  static var displayName: String! {
     get {
       return UserDefaults.standard.string(forKey: SettingKey.displayName.rawValue)
     }
