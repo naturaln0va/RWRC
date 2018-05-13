@@ -26,47 +26,46 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 /// THE SOFTWARE.
 
-import FirebaseFirestore
+import Firebase
 
-final class DatabaseHelper {
-
-  typealias CompletionBlock = (Error?) -> Void
+final class StorageHelper {
   
-  private enum TopLevelCollection: String {
-    case channels
-  }
+  typealias DownloadURLBlock = (URL?) -> Void
   
-  private enum DatabaseError: Error {
-    case channelNotSynced
-  }
+  private static let rootReference = Storage.storage().reference()
   
-  private static let db = Firestore.firestore()
-  
-  static var channelReference: CollectionReference {
-    return db.collection(TopLevelCollection.channels.rawValue)
-  }
-  
-  static func saveChannel(_ channel: Channel, completion: CompletionBlock? = nil) {
-    let data = channel.representation
-    channelReference.addDocument(data: data, completion: completion)
-  }
-  
-  static func chatReference(for channel: Channel) -> CollectionReference? {
-    guard let id = channel.id else {
-      return nil
-    }
-    
-    let path = [String(), TopLevelCollection.channels.rawValue, id, "thread"].joined(separator: "/")
-    return db.collection(path)
-  }
-  
-  static func saveMessage(to channel: Channel, message: Message, completion: CompletionBlock? = nil) {
-    guard let ref = chatReference(for: channel) else {
-      completion?(DatabaseError.channelNotSynced)
+  static func uploadImage(_ image: UIImage, to channel: Channel, completion: DownloadURLBlock? = nil) {
+    guard let channelID = channel.id else {
+      completion?(nil)
       return
     }
     
-    ref.addDocument(data: message.representation, completion: completion)
+    guard let scaledImage = image.scaledToSafeUploadSize, let data = UIImageJPEGRepresentation(scaledImage, 0.4) else {
+      completion?(nil)
+      return
+    }
+    
+    let metadata = StorageMetadata()
+    metadata.contentType = "image/jpeg"
+    
+    let imageName = [UUID().uuidString, String(Date().timeIntervalSince1970)].joined()
+    rootReference.child(channelID).child(imageName).putData(data, metadata: metadata) { meta, error in
+      completion?(meta?.downloadURL())
+    }
+  }
+  
+  static func dowloadImage(at url: URL, completion: @escaping (UIImage?) -> Void) {
+    let ref = Storage.storage().reference(forURL: url.absoluteString)
+    let megaBtye = Int64(1 * 1024 * 1024)
+    
+    ref.getData(maxSize: megaBtye) { data, error in
+      guard let imageData = data else {
+        completion(nil)
+        return
+      }
+      
+      completion(UIImage(data: imageData))
+    }
   }
   
 }

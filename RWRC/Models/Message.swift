@@ -38,12 +38,19 @@ struct Message: MessageType {
   let sender: Sender
   
   var data: MessageData {
-    return .text(content)
+    if let image = image {
+      return .photo(image)
+    } else {
+      return .text(content)
+    }
   }
   
   var messageId: String {
     return id ?? UUID().uuidString
   }
+  
+  var image: UIImage? = nil
+  var downloadURL: URL? = nil
   
   init(user: User, content: String) {
     sender = Sender(id: user.uid, displayName: AppSettings.displayName)
@@ -52,12 +59,17 @@ struct Message: MessageType {
     id = nil
   }
   
+  init(user: User, image: UIImage) {
+    sender = Sender(id: user.uid, displayName: AppSettings.displayName)
+    self.image = image
+    content = String()
+    sentDate = Date()
+    id = nil
+  }
+  
   init?(document: QueryDocumentSnapshot) {
     let data = document.data()
     
-    guard let content = data["content"] as? String else {
-      return nil
-    }
     guard let sentDate = data["created"] as? Date else {
       return nil
     }
@@ -70,9 +82,18 @@ struct Message: MessageType {
     
     id = document.documentID
     
-    self.content = content
     self.sentDate = sentDate
     sender = Sender(id: senderID, displayName: senderName)
+    
+    if let content = data["content"] as? String {
+      self.content = content
+      downloadURL = nil
+    } else if let urlString = data["url"] as? String, let url = URL(string: urlString) {
+      downloadURL = url
+      content = String()
+    } else {
+      return nil
+    }
   }
   
 }
@@ -80,12 +101,19 @@ struct Message: MessageType {
 extension Message: DatabaseRepresentation {
   
   var representation: [String : Any] {
-    return [
-      "content": content,
+    var rep: [String : Any] = [
       "created": sentDate,
       "senderID": sender.id,
       "senderName": sender.displayName
     ]
+    
+    if let url = downloadURL {
+      rep["url"] = url.absoluteString
+    } else {
+      rep["content"] = content
+    }
+    
+    return rep
   }
   
 }

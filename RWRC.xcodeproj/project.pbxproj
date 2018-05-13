@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		481A352C20A8E6DC008CD16B /* UIImage+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481A352B20A8E6DC008CD16B /* UIImage+Additions.swift */; };
+		481A352E20A8E956008CD16B /* UICollectionView+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481A352D20A8E956008CD16B /* UICollectionView+Additions.swift */; };
 		4859774D20A689C700429CB3 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4859774C20A689C700429CB3 /* AppSettings.swift */; };
 		4859775020A68AF800429CB3 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4859774E20A68AF800429CB3 /* LoginViewController.swift */; };
 		4859775120A68AF800429CB3 /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4859774F20A68AF800429CB3 /* LoginViewController.xib */; };
@@ -20,6 +22,7 @@
 		4859776420A7A1BD00429CB3 /* DatabaseRepresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4859776320A7A1BD00429CB3 /* DatabaseRepresentation.swift */; };
 		4859776620A7AD3800429CB3 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4859776520A7AD3800429CB3 /* ChatViewController.swift */; };
 		4859776820A7D34400429CB3 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4859776720A7D34400429CB3 /* Message.swift */; };
+		4859776C20A8C59400429CB3 /* StorageHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4859776B20A8C59400429CB3 /* StorageHelper.swift */; };
 		48AC74C720A66C2A00AA1788 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48AC74C620A66C2A00AA1788 /* AppDelegate.swift */; };
 		48AC74CE20A66C2C00AA1788 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 48AC74CD20A66C2C00AA1788 /* Assets.xcassets */; };
 		48AC74D120A66C2C00AA1788 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 48AC74CF20A66C2C00AA1788 /* LaunchScreen.storyboard */; };
@@ -29,6 +32,8 @@
 
 /* Begin PBXFileReference section */
 		138B8A2C43BFE3C4675D8981 /* Pods-RWRC.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RWRC.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RWRC/Pods-RWRC.debug.xcconfig"; sourceTree = "<group>"; };
+		481A352B20A8E6DC008CD16B /* UIImage+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Additions.swift"; sourceTree = "<group>"; };
+		481A352D20A8E956008CD16B /* UICollectionView+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionView+Additions.swift"; sourceTree = "<group>"; };
 		4859774C20A689C700429CB3 /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
 		4859774E20A68AF800429CB3 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		4859774F20A68AF800429CB3 /* LoginViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LoginViewController.xib; sourceTree = "<group>"; };
@@ -42,6 +47,7 @@
 		4859776320A7A1BD00429CB3 /* DatabaseRepresentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseRepresentation.swift; sourceTree = "<group>"; };
 		4859776520A7AD3800429CB3 /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		4859776720A7D34400429CB3 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
+		4859776B20A8C59400429CB3 /* StorageHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageHelper.swift; sourceTree = "<group>"; };
 		48AC74C320A66C2A00AA1788 /* RWRC.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RWRC.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		48AC74C620A66C2A00AA1788 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		48AC74CD20A66C2C00AA1788 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -75,7 +81,9 @@
 		4859775820A68C9B00429CB3 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				481A352D20A8E956008CD16B /* UICollectionView+Additions.swift */,
 				4859775920A68CAC00429CB3 /* UIColor+Additions.swift */,
+				481A352B20A8E6DC008CD16B /* UIImage+Additions.swift */,
 				4859775D20A69CD500429CB3 /* UIView+Additions.swift */,
 			);
 			path = Extensions;
@@ -142,6 +150,7 @@
 				48AC74C620A66C2A00AA1788 /* AppDelegate.swift */,
 				4859774C20A689C700429CB3 /* AppSettings.swift */,
 				4859776120A79FC200429CB3 /* DatabaseHelper.swift */,
+				4859776B20A8C59400429CB3 /* StorageHelper.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -318,6 +327,8 @@
 				4859775320A68B1C00429CB3 /* ChannelsViewController.swift in Sources */,
 				4859775720A68C6F00429CB3 /* NavigationController.swift in Sources */,
 				4859775520A68BF500429CB3 /* AppController.swift in Sources */,
+				4859776C20A8C59400429CB3 /* StorageHelper.swift in Sources */,
+				481A352E20A8E956008CD16B /* UICollectionView+Additions.swift in Sources */,
 				4859775020A68AF800429CB3 /* LoginViewController.swift in Sources */,
 				4859775E20A69CD500429CB3 /* UIView+Additions.swift in Sources */,
 				48AC74C720A66C2A00AA1788 /* AppDelegate.swift in Sources */,
@@ -328,6 +339,7 @@
 				4859776020A7993F00429CB3 /* Channel.swift in Sources */,
 				4859776620A7AD3800429CB3 /* ChatViewController.swift in Sources */,
 				4859775A20A68CAC00429CB3 /* UIColor+Additions.swift in Sources */,
+				481A352C20A8E6DC008CD16B /* UIImage+Additions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

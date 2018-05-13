@@ -35,7 +35,7 @@ class ChannelsViewController: UITableViewController {
   private let toolbarLabel: UILabel = {
     let label = UILabel()
     label.textAlignment = .center
-    label.font = UIFont.systemFont(ofSize: 12)
+    label.font = UIFont.systemFont(ofSize: 15)
     return label
   }()
   

@@ -26,47 +26,29 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 /// THE SOFTWARE.
 
-import FirebaseFirestore
+import UIKit
 
-final class DatabaseHelper {
-
-  typealias CompletionBlock = (Error?) -> Void
+extension UIImage {
   
-  private enum TopLevelCollection: String {
-    case channels
+  var scaledToSafeUploadSize: UIImage? {
+    let maxImageSideLength: CGFloat = 480
+    
+    let largerSide: CGFloat = max(size.width, size.height)
+    let ratioScale: CGFloat = largerSide > maxImageSideLength ? largerSide / maxImageSideLength : 1
+    let newImageSize = CGSize(width: size.width / ratioScale, height: size.height / ratioScale)
+    
+    return image(scaledTo: newImageSize)
   }
   
-  private enum DatabaseError: Error {
-    case channelNotSynced
-  }
-  
-  private static let db = Firestore.firestore()
-  
-  static var channelReference: CollectionReference {
-    return db.collection(TopLevelCollection.channels.rawValue)
-  }
-  
-  static func saveChannel(_ channel: Channel, completion: CompletionBlock? = nil) {
-    let data = channel.representation
-    channelReference.addDocument(data: data, completion: completion)
-  }
-  
-  static func chatReference(for channel: Channel) -> CollectionReference? {
-    guard let id = channel.id else {
-      return nil
+  func image(scaledTo size: CGSize) -> UIImage? {
+    defer {
+      UIGraphicsEndImageContext()
     }
     
-    let path = [String(), TopLevelCollection.channels.rawValue, id, "thread"].joined(separator: "/")
-    return db.collection(path)
-  }
-  
-  static func saveMessage(to channel: Channel, message: Message, completion: CompletionBlock? = nil) {
-    guard let ref = chatReference(for: channel) else {
-      completion?(DatabaseError.channelNotSynced)
-      return
-    }
-    
-    ref.addDocument(data: message.representation, completion: completion)
+    UIGraphicsBeginImageContextWithOptions(size, true, 0)
+    draw(in: CGRect(origin: .zero, size: size))
+
+    return UIGraphicsGetImageFromCurrentImageContext()
   }
   
 }

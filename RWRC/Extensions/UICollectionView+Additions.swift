@@ -26,47 +26,20 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 /// THE SOFTWARE.
 
-import FirebaseFirestore
+import UIKit
 
-final class DatabaseHelper {
-
-  typealias CompletionBlock = (Error?) -> Void
+extension UIScrollView {
   
-  private enum TopLevelCollection: String {
-    case channels
+  var isAtBottom: Bool {
+    return contentOffset.y >= verticalOffsetForBottom
   }
   
-  private enum DatabaseError: Error {
-    case channelNotSynced
-  }
-  
-  private static let db = Firestore.firestore()
-  
-  static var channelReference: CollectionReference {
-    return db.collection(TopLevelCollection.channels.rawValue)
-  }
-  
-  static func saveChannel(_ channel: Channel, completion: CompletionBlock? = nil) {
-    let data = channel.representation
-    channelReference.addDocument(data: data, completion: completion)
-  }
-  
-  static func chatReference(for channel: Channel) -> CollectionReference? {
-    guard let id = channel.id else {
-      return nil
-    }
-    
-    let path = [String(), TopLevelCollection.channels.rawValue, id, "thread"].joined(separator: "/")
-    return db.collection(path)
-  }
-  
-  static func saveMessage(to channel: Channel, message: Message, completion: CompletionBlock? = nil) {
-    guard let ref = chatReference(for: channel) else {
-      completion?(DatabaseError.channelNotSynced)
-      return
-    }
-    
-    ref.addDocument(data: message.representation, completion: completion)
+  var verticalOffsetForBottom: CGFloat {
+    let scrollViewHeight = bounds.height
+    let scrollContentSizeHeight = contentSize.height
+    let bottomInset = contentInset.bottom
+    let scrollViewBottomOffset = scrollContentSizeHeight + bottomInset - scrollViewHeight
+    return scrollViewBottomOffset
   }
   
 }

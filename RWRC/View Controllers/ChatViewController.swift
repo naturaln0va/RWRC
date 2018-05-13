@@ -27,11 +27,20 @@
 /// THE SOFTWARE.
 
 import UIKit
+import Photos
 import Firebase
 import MessageKit
 import FirebaseFirestore
 
 final class ChatViewController: MessagesViewController {
+  
+  private var isSendingPhoto = false {
+    didSet {
+      messageInputBar.leftStackViewItems.forEach { item in
+        item.isEnabled = !isSendingPhoto
+      }
+    }
+  }
   
   private var messages = [Message]()
   private var messageListener: ListenerRegistration?
@@ -80,10 +89,39 @@ final class ChatViewController: MessagesViewController {
     messageInputBar.inputTextView.tintColor = .primary
     messageInputBar.sendButton.setTitleColor(.primary, for: .normal)
     
+    let cameraItem = InputBarButtonItem(type: .system)
+    cameraItem.tintColor = .primary
+    cameraItem.image = #imageLiteral(resourceName: "camera")
+    cameraItem.addTarget(
+      self,
+      action: #selector(cameraButtonPressed),
+      for: .primaryActionTriggered
+    )
+    cameraItem.setSize(CGSize(width: 60, height: 30), animated: false)
+    
+    messageInputBar.leftStackView.alignment = .center
+    messageInputBar.setLeftStackViewWidthConstant(to: 50, animated: false)
+    messageInputBar.setStackViewItems([cameraItem], forStack: .left, animated: false)
+    
     messageInputBar.delegate = self
     messagesCollectionView.messagesDataSource = self
     messagesCollectionView.messagesLayoutDelegate = self
     messagesCollectionView.messagesDisplayDelegate = self
+  }
+  
+  // MARK: - Actions
+  
+  @objc private func cameraButtonPressed() {
+    let picker = UIImagePickerController()
+    picker.delegate = self
+    
+    if UIImagePickerController.isSourceTypeAvailable(.camera) {
+      picker.sourceType = .camera
+    } else {
+      picker.sourceType = .photoLibrary
+    }
+    
+    present(picker, animated: true, completion: nil)
   }
   
   // MARK: - Helpers
@@ -97,27 +135,66 @@ final class ChatViewController: MessagesViewController {
     messages.sort()
     
     if let index = messages.index(of: message) {
-      messagesCollectionView.insertSections(IndexSet(integer: index))
+      let shouldScrollToBottom = messagesCollectionView.isAtBottom
+      
+      messagesCollectionView.performBatchUpdates({
+        self.messagesCollectionView.insertSections(IndexSet(integer: index))
+      }) { _ in
+        if shouldScrollToBottom {
+          self.messagesCollectionView.scrollToBottom(animated: true)
+        }
+      }
     } else {
       messagesCollectionView.reloadDataAndKeepOffset()
     }
   }
   
   private func handleDocumentChange(_ change: DocumentChange) {
-    guard let message = Message(document: change.document) else {
+    guard var message = Message(document: change.document) else {
       return
     }
     
     switch change.type {
     case .added:
-      insertNewMessage(message)
+      if let url = message.downloadURL {
+        StorageHelper.dowloadImage(at: url) { image in
+          guard let image = image else {
+            return
+          }
+          
+          message.image = image
+          self.insertNewMessage(message)
+        }
+      } else {
+        insertNewMessage(message)
+      }
       
     default:
       break
     }
   }
   
+  private func sendPhoto(_ image: UIImage) {
+    isSendingPhoto = true
+    
+    StorageHelper.uploadImage(image, to: channel) { url in
+      self.isSendingPhoto = false
+      
+      guard let url = url else {
+        return
+      }
+      
+      var message = Message(user: self.user, image: image)
+      message.downloadURL = url
+      
+      DatabaseHelper.saveMessage(to: self.channel, message: message)
+      self.messagesCollectionView.scrollToBottom()
+    }
+  }
+  
 }
+
+// MARK: - MessagesDisplayDelegate
 
 extension ChatViewController: MessagesDisplayDelegate {
   
@@ -135,6 +212,8 @@ extension ChatViewController: MessagesDisplayDelegate {
   }
   
 }
+
+// MARK: - MessagesLayoutDelegate
 
 extension ChatViewController: MessagesLayoutDelegate {
 
@@ -198,6 +277,31 @@ extension ChatViewController: MessageInputBarDelegate {
     }
     
     inputBar.inputTextView.text = String()
+  }
+  
+}
+
+extension ChatViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+  
+  func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+    picker.dismiss(animated: true, completion: nil)
+    
+    if let asset = info[UIImagePickerControllerPHAsset] as? PHAsset {
+      let size = CGSize(width: 500, height: 500)
+      PHImageManager.default().requestImage(for: asset, targetSize: size, contentMode: .aspectFit, options: nil) { result, info in
+        guard let image = result else {
+          return
+        }
+        
+        self.sendPhoto(image)
+      }
+    } else if let image = info[UIImagePickerControllerOriginalImage] as? UIImage {
+      sendPhoto(image)
+    }
+  }
+  
+  func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+    picker.dismiss(animated: true, completion: nil)
   }
   
 }
