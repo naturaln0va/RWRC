@@ -36,6 +36,7 @@ extension UIView {
       roundedRect: bounds,
       cornerRadius: radius
     ).cgPath
+    
     layer.mask = maskLayer
   }
   
