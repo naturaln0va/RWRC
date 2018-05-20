@@ -276,7 +276,7 @@ extension ChatViewController: MessageInputBarDelegate {
       self.messagesCollectionView.scrollToBottom()
     }
     
-    inputBar.inputTextView.text = String()
+    inputBar.inputTextView.text = ""
   }
   
 }

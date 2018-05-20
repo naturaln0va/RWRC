@@ -56,7 +56,7 @@ final class DatabaseHelper {
       return nil
     }
     
-    let path = [String(), TopLevelCollection.channels.rawValue, id, "thread"].joined(separator: "/")
+    let path = [TopLevelCollection.channels.rawValue, id, "thread"].joined(separator: "/")
     return db.collection(path)
   }
   

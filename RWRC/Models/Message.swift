@@ -62,7 +62,7 @@ struct Message: MessageType {
   init(user: User, image: UIImage) {
     sender = Sender(id: user.uid, displayName: AppSettings.displayName)
     self.image = image
-    content = String()
+    content = ""
     sentDate = Date()
     id = nil
   }
@@ -90,7 +90,7 @@ struct Message: MessageType {
       downloadURL = nil
     } else if let urlString = data["url"] as? String, let url = URL(string: urlString) {
       downloadURL = url
-      content = String()
+      content = ""
     } else {
       return nil
     }

@@ -56,9 +56,9 @@ final class StorageHelper {
   
   static func dowloadImage(at url: URL, completion: @escaping (UIImage?) -> Void) {
     let ref = Storage.storage().reference(forURL: url.absoluteString)
-    let megaBtye = Int64(1 * 1024 * 1024)
+    let megaByte = Int64(1 * 1024 * 1024)
     
-    ref.getData(maxSize: megaBtye) { data, error in
+    ref.getData(maxSize: megaByte) { data, error in
       guard let imageData = data else {
         completion(nil)
         return

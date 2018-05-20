@@ -47,8 +47,6 @@ final class AppSettings {
       } else {
         defaults.removeObject(forKey: key)
       }
-      
-      defaults.synchronize()
     }
   }
   
