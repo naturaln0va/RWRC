@@ -135,7 +135,7 @@ final class ChatViewController: MessagesViewController {
     messages.sort()
     
     if let index = messages.index(of: message) {
-      let shouldScrollToBottom = messagesCollectionView.isAtBottom
+      let shouldScrollToBottom = messagesCollectionView.isAtBottom && index == (messages.count - 1)
       
       messagesCollectionView.performBatchUpdates({
         self.messagesCollectionView.insertSections(IndexSet(integer: index))
@@ -280,6 +280,8 @@ extension ChatViewController: MessageInputBarDelegate {
   }
   
 }
+
+// MARK: - UIImagePickerControllerDelegate
 
 extension ChatViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
   

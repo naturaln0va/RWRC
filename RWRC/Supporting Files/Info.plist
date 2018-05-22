@@ -39,5 +39,9 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>NSCameraUsageDescription</key>
+	<string>Used to send photos from the Camera.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Used to send a photo from your Camera Roll.</string>
 </dict>
 </plist>
